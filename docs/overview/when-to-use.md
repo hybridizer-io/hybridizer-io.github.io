@@ -8,7 +8,7 @@ keywords: [use cases, suitability, limitations, GPU, SIMD]
 Great fit when:
 
 - Data-parallel workloads (SIMD/SIMT), large arrays, linear algebra, image/signal processing.
-- Hot paths in C# or Java that dominate runtime.
+- Hot paths in C# that dominate runtime.
 - Need cross-platform performance without rewriting in CUDA/C++.
 
 Considerations:

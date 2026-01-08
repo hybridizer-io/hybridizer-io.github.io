@@ -18,14 +18,17 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */ ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/hybridizer-io/hybridizer-docs/edit/main/',
+          editUrl: 'https://github.com/hybridizer-io/hybridizer-io.github.io/edit/master/',
           routeBasePath: '/docs'
         },
         blog: false,
@@ -44,8 +47,8 @@ const config = {
         src: 'img/logo.svg',
       },
       items: [
-        {type: 'docSidebar', sidebarId: 'docsSidebar', position: 'left', label: 'Docs'},
-        {href: 'https://docs.hybridizer.io', label: 'Legacy Docs', position: 'right'}
+        { type: 'docSidebar', sidebarId: 'docsSidebar', position: 'left', label: 'Docs' },
+        { href: 'https://docs.hybridizer.io', label: 'Legacy Docs', position: 'right' }
       ],
     },
     footer: {
@@ -54,13 +57,13 @@ const config = {
         {
           title: 'Docs',
           items: [
-            {label: 'Getting Started', to: '/docs'},
+            { label: 'Getting Started', to: '/docs' },
           ],
         },
         {
           title: 'Community',
           items: [
-            {label: 'GitHub', href: 'https://github.com/hybridizer-io'}
+            { label: 'GitHub', href: 'https://github.com/hybridizer-io' }
           ],
         },
       ],

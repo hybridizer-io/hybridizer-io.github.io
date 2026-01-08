@@ -1,65 +1,183 @@
 ---
 id: hello-gpu
 title: Hello GPU (C#)
+description: Your first Hybridizer kernel - a complete walkthrough of vector addition on GPU.
+keywords: [Hybridizer, quickstart, tutorial, CUDA, hello world, vector add]
 ---
 
-# Your First "Hello GPU!"
+# Your First Kernel: Hello GPU!
 
-Let's run your first piece of accelerated code. This simple example adds two vectors together, a classic parallel computing task.
+Let's run your first piece of accelerated code. This simple example adds two vectors together — a classic parallel computing task that demonstrates the power of GPU acceleration.
 
-### The C# Code
+## What You'll Learn
 
-Here is a simple C# console application. The `Add` method is the one we want to run on the GPU. We mark it with the `[EntryPoint]` attribute.
+- How to mark a method as an entry point
+- How to use work distribution with `threadIdx` and `blockIdx`
+- How to invoke generated code from your host application
+
+## Prerequisites
+
+- Hybridizer installed ([Installation Guide](./install))
+- NVIDIA GPU with CUDA support
+- Visual Studio with C# support
+
+## The Complete Example
+
+### Step 1: Create Your Project
+
+Create a new C# Console Application and add the Hybridizer NuGet packages:
+
+```bash
+dotnet add package Hybridizer.Runtime.CUDAImports
+```
+
+### Step 2: Write Your Kernel
 
 ```csharp
+using System;
 using Hybridizer.Runtime.CUDAImports;
 
-namespace HelloWorld
+namespace HelloGPU
 {
     class Program
     {
+        // Mark this method as a GPU entry point
         [EntryPoint]
-        public static void Add(float[] a, float[] b, int n)
+        public static void VectorAdd(float[] a, float[] b, float[] c, int n)
         {
-            for (int i = 0; i < n; ++i)
+            // Work distribution using CUDA concepts
+            for (int i = threadIdx.x + blockDim.x * blockIdx.x; 
+                 i < n; 
+                 i += blockDim.x * gridDim.x)
             {
-                a[i] += b[i];
+                c[i] = a[i] + b[i];
             }
         }
 
         static void Main(string[] args)
         {
-            const int n = 1024;
-            float[] a = new float[n];
-            float[] b = new float[n];
+            const int N = 1024 * 1024; // 1 million elements
             
-            // Initialize arrays...
+            // Allocate arrays
+            float[] a = new float[N];
+            float[] b = new float[N];
+            float[] c = new float[N];
+            
+            // Initialize with test data
+            for (int i = 0; i < N; i++)
+            {
+                a[i] = i;
+                b[i] = 2 * i;
+            }
 
-            // Create a cuda thread
+            // Get GPU properties for optimal configuration
             cudaDeviceProp prop;
             cuda.GetDeviceProperties(out prop, 0);
-            dynamic wrapper = HybRunner.Cuda().SetDistrib(prop.multiProcessorCount * 16, 128);
             
-            // Run on GPU
-            wrapper.Add(a, b, n);
-
-            // Verify results...
+            // Create the Hybridizer runner
+            // Configure: (number of blocks, threads per block)
+            dynamic wrapper = HybRunner.Cuda()
+                .SetDistrib(prop.multiProcessorCount * 16, 256);
+            
+            // Run on GPU!
+            wrapper.VectorAdd(a, b, c, N);
+            
+            // Verify results
+            bool success = true;
+            for (int i = 0; i < N; i++)
+            {
+                float expected = a[i] + b[i];
+                if (Math.Abs(c[i] - expected) > 1e-5f)
+                {
+                    Console.WriteLine($"Mismatch at {i}: {c[i]} != {expected}");
+                    success = false;
+                    break;
+                }
+            }
+            
+            Console.WriteLine(success ? "SUCCESS!" : "FAILED");
         }
     }
 }
 ```
 
-Minimal example: vector add in C# compiled to a CUDA kernel.
+## Understanding the Code
 
-Steps:
+### The Entry Point
 
-1. Create console project and reference Hybridizer packages.
-2. Mark entry method with the required attribute (e.g., `[EntryPoint]`).
-3. Build to generate CUDA code and compile.
-4. Invoke generated kernel from host.
-Notes:
+```csharp
+[EntryPoint]
+public static void VectorAdd(float[] a, float[] b, float[] c, int n)
+```
 
-- Show kernel launch configuration and memory copy.
-- Verify output and compare to CPU version.
+The `[EntryPoint]` attribute tells Hybridizer to generate a CUDA `__global__` kernel from this method.
 
-See: Programming Guide → Invoke Generated Code.
+### Work Distribution Pattern
+
+```csharp
+for (int i = threadIdx.x + blockDim.x * blockIdx.x; 
+     i < n; 
+     i += blockDim.x * gridDim.x)
+```
+
+This is the standard **grid-stride loop** pattern:
+- `threadIdx.x`: Thread index within a block (0 to blockDim.x-1)
+- `blockIdx.x`: Block index within the grid
+- `blockDim.x`: Number of threads per block
+- `gridDim.x`: Number of blocks in the grid
+
+![Grid of Thread Blocks](../images/grid-of-thread-blocks.png)
+
+### Kernel Launch Configuration
+
+```csharp
+wrapper.SetDistrib(prop.multiProcessorCount * 16, 256);
+```
+
+- **First parameter**: Number of blocks (typically `SM count × 16` for good occupancy)
+- **Second parameter**: Threads per block (typically 128, 256, or 512)
+
+## Build and Run
+
+1. Build the solution in Visual Studio (Debug or Release)
+2. The Hybridizer will automatically:
+   - Generate CUDA source code
+   - Compile with nvcc
+   - Link the resulting binary
+3. Run the executable
+
+## Expected Output
+
+```
+SUCCESS!
+```
+
+## What Happens Under the Hood
+
+```mermaid
+sequenceDiagram
+    participant Host as Host (CPU)
+    participant Hyb as HybRunner
+    participant GPU as GPU
+
+    Host->>Hyb: wrapper.VectorAdd(a, b, c, n)
+    Hyb->>GPU: Copy arrays a, b to device
+    Hyb->>GPU: Launch kernel
+    GPU->>GPU: Execute VectorAdd in parallel
+    Hyb->>Host: Copy result c back
+    Host->>Host: Verify results
+```
+
+## Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| "CUDA device not found" | Check NVIDIA driver installation |
+| "nvcc not found" | Add CUDA Toolkit to PATH |
+| Wrong results | Verify array sizes match kernel expectations |
+
+## Next Steps
+
+- [Run and Debug](./run-and-debug) — Debugging GPU code
+- [Core Concepts](../guide/concepts) — Understand work distribution
+- [CUDA Backend](../platforms/cuda) — Deep dive into CUDA features

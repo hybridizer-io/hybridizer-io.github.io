@@ -43,6 +43,7 @@ const sidebars = {
       label: 'CUDA Basics',
       items: [
         'cuda/basics-threading',
+        'cuda/functions',
         'cuda/memory-and-profiling',
         'cuda/perf-metrics'
       ],

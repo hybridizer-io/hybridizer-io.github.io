@@ -5,7 +5,7 @@ title: Install
 
 Prerequisites:
 
-- .NET SDK (for C#) or JDK (for Java)
+- .NET SDK (6.0 or later)
 - NVIDIA CUDA toolkit (for CUDA backend) and compatible GPU drivers, if targeting GPU
 - C++ toolchain (clang/LLVM or MSVC depending on OS)
 
