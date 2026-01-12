@@ -3,7 +3,7 @@
 const config = {
   title: 'Hybridizer Documentation',
   tagline: 'Performance everywhere, same code.',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
   url: 'https://docs.hybridizer.io',
   baseUrl: '/',
@@ -29,7 +29,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/hybridizer-io/hybridizer-io.github.io/edit/master/',
-          routeBasePath: '/docs'
+          routeBasePath: '/'
         },
         blog: false,
         theme: {
@@ -41,31 +41,20 @@ const config = {
 
   themeConfig: /** @type {import('@docusaurus/preset-classic').ThemeConfig} */ ({
     navbar: {
-      title: 'Hybridizer',
+
       logo: {
         alt: 'Hybridizer Logo',
         src: 'img/logo.svg',
+        href: 'https://hybridizer.io'
       },
       items: [
-        { type: 'docSidebar', sidebarId: 'docsSidebar', position: 'left', label: 'Docs' },
+
         { href: 'https://docs.hybridizer.io', label: 'Legacy Docs', position: 'right' }
       ],
     },
     footer: {
       style: 'dark',
       links: [
-        {
-          title: 'Docs',
-          items: [
-            { label: 'Getting Started', to: '/docs' },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            { label: 'GitHub', href: 'https://github.com/hybridizer-io' }
-          ],
-        },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Hybridizer. Built with Love in Paris.`,
     },

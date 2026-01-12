@@ -18,7 +18,7 @@ The Hybridizer operates on **intermediate language** — code that has been comp
 | **MSIL** | Microsoft Intermediate Language — the .NET platform |
 | **LLVM-IR** | The intermediate representation of LLVM |
 
-Then, depending on the selected **Flavor** (see [Platforms & Flavors](/docs/platforms/overview)), the Hybridizer generates source code with all the necessary annotations and code hints to make use of the specific features of each hardware architecture.
+Then, depending on the selected **Flavor** (see [Platforms & Flavors](/platforms/overview)), the Hybridizer generates source code with all the necessary annotations and code hints to make use of the specific features of each hardware architecture.
 
 ![Hybridizer Overview](../images/what-is-hybridizer.png)
 
