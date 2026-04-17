@@ -31,6 +31,16 @@ From a single version of the source intermediate language, **several platforms m
 - **Performance**: Leverages backend-specific optimizations (e.g., SIMT on GPU, SIMD on CPU).
 - **Interoperability**: Generated code is callable from your .NET host.
 
+## Why Hybridizer?
+
+| Benefit | Description |
+|---------|-------------|
+| **Speed** | GPU acceleration and vectorized CPU paths from one code base |
+| **Productivity** | No need to manually rewrite kernels in C++/CUDA |
+| **Portability** | Keep your .NET code; target diverse hardware |
+| **Maintainability** | Fewer language boundaries; debug with line info support |
+| **Trust** | Deterministic compilation pipeline, explicit attributes and annotations |
+
 ## Known Limitations
 
 As of today, the following constructs are **not supported** within the code to be transformed:

@@ -1,0 +1,43 @@
+apiRules:
+- exclude:
+    uidRegex: ^System
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.NativeArrayIndexer
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.AllocatableTypeAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.IntrinsicPrimitiveAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.KnownReturnTypeAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.HybridizerTemplatizeArgumentAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.NativeImportHeaderAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.HybridizerForceIgnoreAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.HeapifyLocalsAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.ReadOnlyAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.WriteOnlyAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.HybridizerExtension
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.IntPtrExtension
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.FieldTools
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.HybridMappedJavaTypeAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.HybridJavaImplementationAttribute
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.IKernelInteropTools
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.Win32KernelInteropTools
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.LinuxKernelInteropTools
+- exclude:
+    uidRegex: ^Hybridizer\.Runtime\.CUDAImports\.KernelInteropTools
+- exclude:
+    uidRegex: ^Altimesh\.Hybridizer\.Runtime
