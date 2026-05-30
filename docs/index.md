@@ -27,4 +27,4 @@ Or follow the full **Tutorials** path, from installation to advanced GPU pattern
 - [**Examples**](./examples/hello-world) — 9 complete working samples from the [GitHub repo](https://github.com/hybridizer-io/hybridizer-basic-samples)
 - [**How-To Recipes**](./howto/port-existing-code) — Port code, optimize, manage memory
 - [**Reference**](./reference/attributes-and-annotations) — All attributes, CLI options, API index
-- [**Claude Plugin**](./claude-plugin/index) — Migrate C# codebases to CUDA with AI assistance
+- [**Claude Plugin**](./claude-plugin/) — Migrate C# codebases to CUDA with AI assistance
