@@ -8,7 +8,9 @@ const sidebars = {
       items: [
         'index',
         'overview/what-is-hybridizer',
-        'overview/when-to-use'
+        'overview/when-to-use',
+        'quickstart/install',
+        'quickstart/hello-gpu',
       ],
     },
     {
@@ -115,6 +117,14 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Claude Plugin',
+      collapsed: true,
+      items: [
+        'claude-plugin/index',
+      ],
+    },
+    {
+      type: 'category',
       label: 'LLM Guide',
       collapsed: true,
       items: [
@@ -123,7 +133,7 @@ const sidebars = {
         'llm/terminology',
         'llm/code-patterns'
       ],
-    }
+    },
   ],
 };
 

@@ -1,0 +1,70 @@
+# Hybridizer
+
+> A compiler that transforms C# (.NET / MSIL) into high-performance CUDA (GPU) and CPU SIMD (AVX/NEON/OMP) code. Write once in C#, run on GPU and CPU with near-native performance.
+
+Hybridizer is NOT a source-to-source translator from C# to CUDA. It operates on compiled managed IL (MSIL), not C# source. The developer annotates methods with [EntryPoint] (GPU __global__) and [Kernel] (GPU __device__), and the Hybridizer CLI transcodes those IL methods into .cu or .cpp source, which is then compiled by nvcc or g++. The resulting satellite DLL is loaded at runtime via SatelliteLoader and dispatched via a HybRunner wrapper.
+
+## Key facts
+
+- Input: MSIL (.NET 8+) or LLVM-IR
+- Output flavors: CUDA, OMP+CUDA, HIP, AVX, AVX2, AVX512 (flavor availability depends on license)
+- Free NuGet tool: CUDA-only, full debug/profiling support, emits cubin blob (not readable .cu source)
+- Paid standalone: all flavors, emits readable .cu/.cpp source
+- Platforms: Windows and Linux
+- Host runtime: .NET 8+
+
+## Critical constraints (always apply)
+
+- MathF.* aborts the transcoder in kernel code with error 0X60AC — use (float)System.Math.X(double) instead
+- AtomicExpr.apply is buggy — use [IntrinsicFunction("atomicAdd")] stubs over a static Atomics class
+- [EntryPoint] class must not be static — HybRunner.Wrap() requires an instance
+- [In]/[Out] parameter attributes come from System.Runtime.InteropServices, not Hybridizer
+- Compile only hybridizer.all.cuda.cu with nvcc — compiling individual per-type .cu files causes duplicate symbol errors
+- FloatResidentArray must be initialised (DevicePointer touched, Status = HostNeedsRefresh) before first kernel write
+- Disable xUnit parallelism for Hybridizer tests — concurrent launches corrupt NativeSerializer
+- nsys/compute-sanitizer hang dotnet on WSL2 — profile on native Windows
+
+## Preferred terminology
+
+- "Hybridizer" (not "translator" or "transpiler")
+- "managed IL" or "MSIL" for input
+- "flavor" for the output target (CUDA flavor, OMP flavor)
+- "entry point" for [EntryPoint] methods; "device function" for [Kernel] methods
+- "data marshalling" for host↔device transfers
+- "satellite DLL" for the native .dll/.so produced by nvcc/g++
+- "HybRunner" for the generated host-side dispatch wrapper
+
+## Compilation pipeline
+
+  dotnet build → MyProject.dll (MSIL)
+    → hybridizer CLI → generated-cuda/hybridizer.all.cuda.cu
+      → nvcc → MyProject_CUDA.dll (satellite)
+        → SatelliteLoader.Load() + HybRunner.Wrap() → kernel dispatch from C#
+
+MSBuild wiring: Directory.Build.props sets $(HybridizerTool); targets in Directory.Build.targets invoke it via plain <Exec>.
+
+## Documentation
+
+- Full docs: https://docs.hybridizer.io
+- Install & quickstart: https://docs.hybridizer.io/quickstart/install
+- First kernel: https://docs.hybridizer.io/quickstart/hello-gpu
+- Tutorials (6 step-by-step): https://docs.hybridizer.io/tutorials/setup
+- Architecture: https://docs.hybridizer.io/overview/architecture
+- Compilation pipeline: https://docs.hybridizer.io/guide/compilation-pipeline
+- All attributes: https://docs.hybridizer.io/reference/attributes-and-annotations
+- CLI reference: https://docs.hybridizer.io/reference/cli-options
+- Data marshalling: https://docs.hybridizer.io/guide/data-marshalling
+- Optimize kernels: https://docs.hybridizer.io/howto/optimize-kernels
+- Manage memory: https://docs.hybridizer.io/howto/manage-memory
+- Platforms & flavors: https://docs.hybridizer.io/platforms/overview
+- Code examples (9 samples): https://docs.hybridizer.io/examples/hello-world
+- CUDA background: https://docs.hybridizer.io/cuda/basics-threading
+- Glossary: https://docs.hybridizer.io/reference/glossary
+- FAQ & troubleshooting: https://docs.hybridizer.io/quickstart/faq-troubleshooting
+- LLM reference (terminology, patterns, task examples): https://docs.hybridizer.io/llm/overview
+- Claude plugin (AI-assisted C#→CUDA migration): https://docs.hybridizer.io/claude-plugin/index
+
+## Source code & samples
+
+- Basic samples: https://github.com/hybridizer-io/hybridizer-basic-samples
+- Claude plugin: https://github.com/hybridizer-io/claude-plugin

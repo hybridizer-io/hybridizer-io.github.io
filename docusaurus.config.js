@@ -49,7 +49,7 @@ const config = {
       },
       items: [
 
-        { href: 'https://docs.hybridizer.io', label: 'Legacy Docs', position: 'right' }
+        { href: 'https://docs.altimesh.com', label: ' Docs', position: 'right' }
       ],
     },
     footer: {

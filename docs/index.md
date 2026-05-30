@@ -10,7 +10,9 @@ slug: /
 
 ## New to Hybridizer?
 
-Start with the **Tutorials** — a step-by-step learning path that takes you from installation to advanced GPU patterns:
+**In a hurry?** → [Install](./quickstart/install) then [Hello GPU](./quickstart/hello-gpu).
+
+Or follow the full **Tutorials** path, from installation to advanced GPU patterns:
 
 1. [**Setup & Installation**](./tutorials/setup) — Get your environment ready in 15 minutes
 2. [**Your First Kernel**](./tutorials/first-kernel) — Write, build, and run a GPU kernel
@@ -25,3 +27,4 @@ Start with the **Tutorials** — a step-by-step learning path that takes you fro
 - [**Examples**](./examples/hello-world) — 9 complete working samples from the [GitHub repo](https://github.com/hybridizer-io/hybridizer-basic-samples)
 - [**How-To Recipes**](./howto/port-existing-code) — Port code, optimize, manage memory
 - [**Reference**](./reference/attributes-and-annotations) — All attributes, CLI options, API index
+- [**Claude Plugin**](./claude-plugin/index) — Migrate C# codebases to CUDA with AI assistance
