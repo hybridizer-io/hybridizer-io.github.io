@@ -62,7 +62,7 @@ MSBuild wiring: Directory.Build.props sets $(HybridizerTool); targets in Directo
 - Glossary: https://docs.hybridizer.io/reference/glossary
 - FAQ & troubleshooting: https://docs.hybridizer.io/quickstart/faq-troubleshooting
 - LLM reference (terminology, patterns, task examples): https://docs.hybridizer.io/llm/overview
-- Claude plugin (AI-assisted C#→CUDA migration): https://docs.hybridizer.io/claude-plugin/index
+- Claude plugin (AI-assisted C#→CUDA migration): https://docs.hybridizer.io/claude-plugin
 
 ## Source code & samples
 
